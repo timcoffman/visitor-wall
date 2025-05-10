@@ -7,3 +7,6 @@ packaging==25.0
 sqlparse==0.5.3
 typing_extensions==4.13.2
 whitenoise==6.9.0
+
+psycopg[c]; sys_platform == "linux"
+psycopg[binary]; sys_platform != "linux"
