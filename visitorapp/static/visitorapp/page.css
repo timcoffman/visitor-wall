@@ -1,0 +1,56 @@
+body {
+	overflow: hidden ;
+}
+
+body > * {
+	position: fixed ;
+	left: 0 ;
+	right: 0 ;
+	top: 0 ;
+	bottom: 0 ;
+	padding: 0.25em;
+}
+
+#header {
+	bottom: auto ;
+	height: 2em ;
+	background: blue ;
+	color: white ;
+}
+
+#main {
+	top: 2em ;
+	bottom: 2em ;
+	background: white ;
+}
+
+#footer {
+	top: auto ;
+	height: 2em ;
+}
+
+.frame {
+	background: blue ;
+	color: white ;
+}
+.frame *:visited { color: white; text-decoration: none; }
+.frame *:link { color: white; text-decoration: none; }
+.frame a:hover { text-decoration: underline; }
+
+.frame {
+	display: flex ;
+	flex-flow: row nowrap;
+}
+
+.frame > * {
+	flex: 1 1 auto;
+	text-align: center;
+}
+
+.frame > *:first-child {
+	text-align: start;
+}
+
+.frame > *:last-child {
+	text-align: end;
+}

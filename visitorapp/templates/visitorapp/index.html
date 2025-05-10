@@ -1,0 +1,25 @@
+{% extends "./page.html" %}
+{% load static %}
+
+{% block title %}
+	All Walls
+{% endblock %}
+
+{% block links %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static 'visitorapp/index.css' %}">
+{% endblock %}
+
+{% block header %}
+	{{ block.super }} - All Walls
+{% endblock %}
+
+{% block main %}
+
+{% if wall_list %}
+
+	<ul>
+	{% for wall in wall_list %}
+		<li>
+			<a href="{% url 'show_wall' wall.id %}">
+				<strong>{{ wall.name

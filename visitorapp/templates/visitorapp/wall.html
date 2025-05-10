@@ -1,0 +1,47 @@
+{% extends "./page.html" %}
+{% load static %}
+
+{% block title %}
+	Wall - {{ wall.name }}
+{% endblock %}
+
+{% block links %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static 'visitorapp/wall.css' %}">
+{% endblock %}
+
+{% block header %}
+	{{ block.super }} - {{ wall.name }}
+{% endblock %}
+
+{% block back %}
+	<a href="{% url 'index' %}">&larr; List of Walls</a>	
+{% endblock %}
+
+{% block main %}
+
+{% if wall %}
+
+	<div class="backdrop">
+		<img src="{% static 'visitorapp/TernNBDP8iBlue_1800x.png' %}">		
+	</div>
+
+	<div class="banner">
+		<div><img height="100%" src="{% url 'draw_banner' %}?text={{ wall.banner | urlencode }}"></div>		
+	</div>
+
+	<div class="info">
+		<p>id: {{ wall.id }}</p>
+		<p>name: {{ wall.name }}</p>
+		<p>banner: {{ wall.banner }}</p>
+		<p>banner:</p>
+		<p>{{ wall.description_html | safe }}</p>
+	</div>
+	
+{% else %}
+
+	<p>no such wall</p>
+
+{% endif %}
+
+{% endblock %}

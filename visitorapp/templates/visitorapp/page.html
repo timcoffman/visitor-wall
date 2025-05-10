@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+{% load static %}
+<html lang="en">
+<head>
+	<title>{% block title %}Visitor Wall{% endblock %}</title>
+	<meta charset="utf-8"/>
+	{% block links %}
+	<link rel="stylesheet" href="{% static 'visitorapp/page.css' %}">
+	{% endblock %}
+</head>
+<body>
+
+<div id="header" class="frame">
+	<div>
+		{% block back %}{% endblock %}			
+	</div>
+	<div>
+		{% block header %}VisitorWall{% endblock %}		
+	</div>
+	<div>
+		v1.0
+	</div>
+</div>
+
+<div id="main">
+	{% block main %}
+	<h1>Welcome to <strong>VisitorWall</strong>!</h1>
+	{% endblock %}
+</div>
+
+<div id="footer" class="frame">
+	<div>
+	</div>
+	<div>
+		&copy; Tim & Em
