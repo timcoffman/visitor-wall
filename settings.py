@@ -37,7 +37,10 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+if IS_HEROKU_APP:
+    ALLOWED_HOSTS = [ '.herokuapp.com' ]
+else:
+    ALLOWED_HOSTS = []
 
 
 # Application definition
