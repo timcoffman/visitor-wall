@@ -16,4 +16,7 @@ def show_wall(request, wall_id ):
 	return render( request, "visitorapp/wall.html", context )
 
 def add_inscription(request, wall_id):
-	wall = get_object_or_40
+	wall = get_object_or_404( Wall, pk=wall_id )
+	visitor, visitor_created = Visitor.objects.get_or_create( cookie=request.session.session_key, defaults={} )
+	inscription = Inscription.objects.create( wall=wall, visitor=visitor, text=request.POST['inscription_text'] )
+	return redirect( reverse( 'show_wall', args=(wall.id,) ) )

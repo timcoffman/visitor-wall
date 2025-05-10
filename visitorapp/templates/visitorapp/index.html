@@ -22,4 +22,16 @@
 	{% for wall in wall_list %}
 		<li>
 			<a href="{% url 'show_wall' wall.id %}">
-				<strong>{{ wall.name
+				<strong>{{ wall.name }}:</strong> "{{ wall.banner }}"
+			</a>
+		</li>
+	{% endfor %}
+	</ul>
+
+{% else %}
+
+	<p>no walls are available</p>
+
+{% endif %}
+
+{% endblock %}
