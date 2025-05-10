@@ -36,6 +36,9 @@
 		<p>banner: {{ wall.banner }}</p>
 		<p>banner:</p>
 		<p>{{ wall.description_html | safe }}</p>
+		{% for i in inscriptions %}
+		<p> inscription: {{i}} <p>
+		{% endfor %}
 	</div>
 	
 {% else %}

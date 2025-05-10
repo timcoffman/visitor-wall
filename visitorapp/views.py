@@ -12,6 +12,7 @@ def index(request):
 def show_wall(request, wall_id ):
 	context = {
 		'wall': get_object_or_404( Wall, pk=wall_id ),
+		'inscriptions': Inscription.objects.order_by('-id')
 	}
 	return render( request, "visitorapp/wall.html", context )
 
