@@ -41,6 +41,22 @@
 		{% endfor %}
 	</div>
 	
+	<div class="badges">
+		{% for b in badge_list %}
+		<div style="left: {{b.position.x}}%; top: {{b.position.y}}%;" class="badge" id="badge-{{b.id}}">
+			<div class="text">
+				<img src="{% url 'draw_ring' %}?text={{ b.text | urlencode }}">
+			</div>
+			<div class="image">
+				<img src="{% static 'visitorapp/2693808_abstract ecology_abstraction_environmental_flower_leaves_icon.svg' %}">
+				<!--
+					<img src="{% static 'visitorapp/9004758_heart_love_valentine_like_icon.svg' %}">
+				-->
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+
 {% else %}
 
 	<p>no such wall</p>

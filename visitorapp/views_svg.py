@@ -1,9 +1,4 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
-
-import math ;
-
-from .vec import VecSpace
+from django.shortcuts import render
 
 def draw_banner(request):
 	text = request.GET['text']
@@ -11,3 +6,10 @@ def draw_banner(request):
 		'bannerContent': text, 
 	}
 	return render( request, "visitorapp/banner.svg", context, content_type='image/svg+xml' )
+
+def draw_ring(request):
+	text = request.GET['text']
+	context = {
+		'bannerContent': text, 
+	}
+	return render( request, "visitorapp/ring.svg", context, content_type='image/svg+xml' )

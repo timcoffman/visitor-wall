@@ -1,5 +1,7 @@
 body {
 	overflow: hidden ;
+	--bg-frame: #305;
+	--fg-frame: white;
 }
 
 body > * {
@@ -14,8 +16,6 @@ body > * {
 #header {
 	bottom: auto ;
 	height: 2em ;
-	background: blue ;
-	color: white ;
 }
 
 #main {
@@ -30,11 +30,11 @@ body > * {
 }
 
 .frame {
-	background: blue ;
-	color: white ;
+	background: var(--bg-frame) ;
+	color: var(--fg-frame) ;
 }
-.frame *:visited { color: white; text-decoration: none; }
-.frame *:link { color: white; text-decoration: none; }
+.frame *:visited { color: var(--fg-frame); text-decoration: none; }
+.frame *:link { color: var(--fg-frame); text-decoration: none; }
 .frame a:hover { text-decoration: underline; }
 
 .frame {
