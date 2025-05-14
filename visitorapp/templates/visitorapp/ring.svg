@@ -30,12 +30,7 @@
 		stroke-width="0.001"
 		stroke-opacity="0.7"
 		/>
-	<use href="#myTextPath"
-		fill="none"
-		stroke="red"
-		stroke-width="0.01"
-		/>
 	<text text-anchor="middle" textLength="2.1">
-		<textPath href="#myTextPath" font-family="Verdana" font-size="0.2" startOffset="50%">{{bannerContent}}</textPath>
+		<textPath href="#myTextPath" font-family="Verdana" font-size="{{bannerFontSize}}" startOffset="50%">{{bannerContent}}</textPath>
 	</text>
 </svg>

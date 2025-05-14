@@ -1,20 +1,34 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.http import QueryDict
+from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
 from django.urls import reverse
 
 from .models import Wall, Visitor, Inscription
 
 def index(request):
 	context = {
-		'wall_list': Wall.objects.order_by('-created_date'), 
+		'wall_list': Wall.objects.order_by('-created_date'),
 	}
 	return render( request, "visitorapp/index.html", context )
+
+BADGE_KEYS = [ 'flower-001', 'bicycle-001', 'heart-001', 'cake-001' ]
+BADGE_IMAGES = {
+	'flower-001': 'visitorapp/2693808_abstract ecology_abstraction_environmental_flower_leaves_icon.svg',
+	'heart-001': 'visitorapp/9004758_heart_love_valentine_like_icon.svg',
+	'bicycle-001': 'visitorapp/3850763_activity_bicycle_cycling_riding_sport_icon.svg',
+	'cake-001': 'visitorapp/6334501_cake_dessert_love_party_sweet_icon.svg',
+}
 
 def show_wall(request, wall_id ):
 	visitor = current_visitor( request )
 	inscriptions = Inscription.objects.order_by('-id');
+	editInscription = int(request.GET['editInscription']) if 'editInscription' in request.GET else None
+	badgeList = [ make_badge(i,visitor, editInscription == i.id ) for i in inscriptions ]
+	editBadge = next( (b for b in badgeList if b['id'] == editInscription), None )
 	context = {
 		'wall': get_object_or_404( Wall, pk=wall_id ),
-		'badge_list': [ make_badge(i,visitor) for i in inscriptions ]
+		'edit_inscription': editInscription,
+		'badge_list': badgeList,
+		'edit_badge': editBadge,
 	}
 	return render( request, "visitorapp/wall.html", context )
 
@@ -24,23 +38,57 @@ def current_visitor( request ):
 	visitor, visitor_created = Visitor.objects.get_or_create( cookie=request.session.session_key, defaults={} )
 	return visitor
 
-def make_badge( inscription, currentVisitor ):
+def make_badge( inscription, currentVisitor, isSelected ):
+	position = position_from_int( inscription.id ) ;
+	skew = skew_from_int( inscription.id )
+	editorLocation = 'upper' if position['y'] > 5 else 'lower'
+	staticImage = image_from_int( inscription.id )
 	badge = {
 		'id': inscription.id,
 		'text': inscription.text,
-		'isMine': currentVisitor.id == inscription.visitor_id,
-		'position': position_from_int( inscription.id ),
+		'static_image': staticImage,
+		'is_mine': currentVisitor.id == inscription.visitor_id,
+		'is_selected': isSelected,
+		'position': position,
+		'skew': skew,
+		'editor_location': editorLocation,
 		}
 	return badge
 
+POS_M = 27644437
+POS_D = 1932.0
+
 def position_from_int( n ):
-	q = ( n * 7919 ) % (83*83)
-	x = (q // 83) / 83.0
-	y = (q % 83) / 83.0
-	return { 'x': int(x * 100), 'y': int(y * 100) } 
+	q = ( n * POS_M ) % (POS_D*POS_D)
+	x = (q // POS_D) / POS_D
+	y = (q % POS_D) / POS_D
+	return { 'x': int(x * 100), 'y': int(y * 100) }
+
+def skew_from_int( n ):
+	q = ( n * POS_M ) % (POS_D)
+	k = q / POS_D * 10.0 - 5.0
+	return k
+
+def image_from_int( n ):
+	i = n % len(BADGE_KEYS)
+	k = BADGE_KEYS[ i ]
+	return BADGE_IMAGES[ k ]
 
 def add_inscription(request, wall_id):
 	wall = get_object_or_404( Wall, pk=wall_id )
 	visitor = current_visitor( request )
-	inscription = Inscription.objects.create( wall=wall, visitor=visitor, text=request.POST['inscription_text'] )
+	inscription = Inscription.objects.create( wall=wall, visitor=visitor, text='inscribe your message here' )
+	q = QueryDict(mutable=True)
+	q['editInscription'] = inscription.id
+	return redirect( reverse( 'show_wall', args=(wall.id,), query=q ) )
+
+def update_inscription(request, wall_id, inscription_id):
+	wall = get_object_or_404( Wall, pk=wall_id )
+	if 'commit' in request.POST:
+		visitor = current_visitor( request )
+		inscription = get_object_or_404( Inscription, pk=inscription_id )
+		if ( visitor.id != inscription.visitor_id ):
+			return HttpResponse( f'not authorized to rewrite this inscription', status=401)
+		inscription.text = request.POST['text']
+		inscription.save()
 	return redirect( reverse( 'show_wall', args=(wall.id,) ) )

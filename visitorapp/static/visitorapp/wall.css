@@ -4,6 +4,10 @@
 }
 
 .info {
+	display: none;
+}
+
+.info {
 	padding: 1em;
 	top: 2em ;
 	left: 2em;
@@ -19,16 +23,18 @@
 }
 
 .badges {
-	top: 2%;
-	left: 2%;
-	bottom: 17%;
-	right: 17%;
+	top: 16vmin;
+	left: 16vmin;
+	bottom: 16vmin;
+	right: 16vmin;
 }
 
 .badge {
 	position: absolute;
 	width: 30vmin;
 	height: 30vmin;
+	margin-left: -15vmin;
+	margin-top: -15vmin;
 }
 
 .badge > * {
@@ -40,10 +46,11 @@
 }
 
 .badge > .image {
-	left: 1.5em;
-	right: 1.5em;
-	top: 1.5em;
-	bottom: 1.5em;
+	left: 1.7em;
+	right: 1.7em;
+	top: 1.7em;
+	bottom: 1.7em;
+	opacity: 0.8;
 }
 
 .badge img {
@@ -51,26 +58,174 @@
 	height: 100%;
 }
 
+.badge > .text {
+	animation:spin-badge 20s linear infinite;
+}
+
+@keyframes spin-badge {
+    100% {
+        transform:rotate(-360deg);
+    }
+}
+
+.badge.selected > .text {
+	transform:rotate(-5deg);
+	animation: wiggle-badge 2s ease-in-out infinite;
+}
+
+@keyframes wiggle-badge {
+    0% {
+        transform:rotate(-5deg);
+    }
+    50% {
+        transform:rotate(+5deg);
+    }
+	100% {
+        transform:rotate(-5deg);
+    }
+}
+
+.badges.edit-mode .badge {
+	opacity: 50%;
+}
+
+.badges.edit-mode .badge.selected {
+	opacity: 100%;
+	z-index: 1;
+}
+
+.badge-editor {
+	position: absolute ;
+	font-size: 5vmin;
+	left: 1em ;
+	right: 1em ;
+	min-height: 2em ;
+	height: auto ;
+	border: solid 2px black;
+	box-shadow: 3px 3px 5px 0px #777;
+	z-index: 1;
+}
+
+.badge-editor.upper {
+	top: 1em ;
+}
+
+.badge-editor.lower {
+	bottom: 1em ;
+}
+
+.badge-editor {
+	display: none ;
+}
+
+.badge-editor.editing {
+	display: flex ;
+}
+
+.badge-editor {
+	display: flex ;
+	flex-flow: column wrap;
+	justify-content: stretch;
+	border-color: orange;
+	background-color: peachpuff;
+	border-radius: 0.5em;
+}
+
+.badge-editor .text {
+	padding: 0.25em;
+	flex: 1 0 auto ;
+}
+
+.badge-editor .button {
+	padding: 0.25em;
+	flex: 0 0 2em ;
+	font-size: 1rem;
+}
+
+.badge-editor input,
+.badge-editor button,
+.badge-editor a {
+	width: 100%;
+	height: 100%;
+}
+
+.badge-editor input {
+	background: rgba(255,255,255,0.4);
+	border: none;
+	font-size: 1em;
+}
+
+.badge-editor .buttons {
+	display: flex ;
+	flex-flow: row nowrap;
+	justify-content: end;
+}
+
+.badge-editor .buttons > * {
+	flex: 1 1 auto;
+}
+
+.badge-editor a {
+	display: flex ;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: center;
+}
+
+.badge-editor a:visited {
+	color: black;
+}
+
+.badge-editor button {
+	background: none;
+	border-color: orange;
+	border-radius: 1em;
+	padding: 0.25em 1em;
+	display: flex ;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: center;
+}
+
+.badge-editor .button img {
+	margin: 0.1em 0.25em;
+}
+
+.badge-editor .button:hover button {
+	background: white;
+}
+
+
 .backdrop {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
 	top: 0;
 	right: 0;
 	left: 0;
 	bottom: 0;
 }
 
+.backdrop > * {
+	flex: 0 1 0;
+}
+
+.backdrop img {
+	height: 100%;
+}
+
+
 .banner {
 	display: flex;
 	flex-flow: row nowrap;
-	justify-content: space-around;
+	justify-content: center;
 	top: 10px;
 	right: 0;
 	left: 0;
-	text-align: center;
-	font-size: 3rem;
 }
 
 .banner > * {
-	flex: 0 1 auto;
+	flex: 0 1 0;
 	/*
 	border: solid 2px black;
 	padding: 0em 0.25em;
@@ -79,14 +234,44 @@
 	*/
 }
 
-.backdrop {
-	text-align: center;
+.banner img {
+	max-width: 98vw
 }
 
-.backdrop img {
-	max-width: 100%;
-	max-height: 100%;
-	vertical-align: bottom;
+.wall-controls {
+	top: 2%;
+	width: 30vmin;
+	height: 30vmin;
+	right: 2%;
 }
 
+.controls {
+	display: flex ;
+	flex-flow: row wrap;
+	justify-content: end;
+}
 
+.controls > * {
+	flex: 0 0 auto;
+	width: 10vmin;
+	height: 10vmin;
+}
+
+.controls button {
+	cursor: pointer;
+	border-color: orange;
+	background-color: peachpuff;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	padding: 20%;
+	box-shadow: 3px 3px 5px 0px #777;
+}
+
+.badge-selector {
+	display: block ;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	z-index: 20;
+}
