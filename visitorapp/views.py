@@ -1,7 +1,9 @@
 from django.http import QueryDict
 from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
 from django.urls import reverse
+from django.db.models import Q
 
+from datetime import datetime, timedelta
 import colorsys
 
 from .models import Wall, Visitor, Inscription
@@ -22,8 +24,17 @@ BADGE_IMAGES = {
 
 def show_wall(request, wall_id ):
 	wall = get_object_or_404( Wall, pk=wall_id )
-	inscriptions = wall.inscription_set.order_by('-id');
 	visitor = current_visitor( request )
+	datetime_cutoff = datetime.now() - timedelta(hours=1, minutes=0)
+	query = (
+		Q(visitor_id=visitor.id) | # show because this visitor wrote it
+		Q(moderation_status='ok') | # show because it's been reviewed and is ok
+		(
+			Q(moderation_status='new') & # show because it hasn't been moderated ...
+			Q(created_date__gte=datetime_cutoff)  # ... but it was just created recently
+		)
+	)
+	inscriptions = wall.inscription_set.filter(query).order_by('-id');
 	editInscription = int(request.GET['editInscription']) if 'editInscription' in request.GET else None
 	badgeList = [ make_badge(i,visitor, editInscription == i.id ) for i in inscriptions ]
 	editBadge = next( (b for b in badgeList if b['id'] == editInscription), None )
@@ -86,10 +97,18 @@ def image_from_int( n ):
 	k = BADGE_KEYS[ i ]
 	return BADGE_IMAGES[ k ]
 
+INITIAL_TEXT = 'inscribe your message here'
+
 def add_inscription(request, wall_id):
 	wall = get_object_or_404( Wall, pk=wall_id )
 	visitor = current_visitor( request )
-	inscription = Inscription.objects.create( wall=wall, visitor=visitor, text='inscribe your message here' )
+	inscription = Inscription.objects.create(
+		wall=wall,
+		visitor=visitor,
+		text=INITIAL_TEXT,
+		moderation_status='new',
+		created_date=datetime.now()
+		)
 	q = QueryDict(mutable=True)
 	q['editInscription'] = inscription.id
 	return redirect( reverse( 'show_wall', args=(wall.id,), query=q ) )
