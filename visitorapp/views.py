@@ -2,6 +2,8 @@ from django.http import QueryDict
 from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
 from django.urls import reverse
 
+import colorsys
+
 from .models import Wall, Visitor, Inscription
 
 def index(request):
@@ -40,7 +42,8 @@ def current_visitor( request ):
 	return visitor
 
 def make_badge( inscription, currentVisitor, isSelected ):
-	position = position_from_int( inscription.id ) ;
+	position = position_from_int( inscription.id )
+	bg = bg_from_int( inscription.id )
 	skew = skew_from_int( inscription.id )
 	editorLocation = 'upper' if position['y'] > 5 else 'lower'
 	staticImage = image_from_int( inscription.id )
@@ -52,6 +55,7 @@ def make_badge( inscription, currentVisitor, isSelected ):
 		'is_selected': isSelected,
 		'position': position,
 		'skew': skew,
+		'bg': bg,
 		'editor_location': editorLocation,
 		}
 	return badge
@@ -69,6 +73,13 @@ def skew_from_int( n ):
 	q = ( n * POS_M ) % (POS_D)
 	k = q / POS_D * 10.0 - 5.0
 	return k
+
+def bg_from_int( n ):
+	q = ( n * POS_M ) % (POS_D)
+	h = q / POS_D * 1.00
+	rgb = colorsys.hsv_to_rgb( h, 0.07, 1.0 )
+	print( f'h -> rgb = {0.77 + h} -> {rgb}')
+	return f'#{int(rgb[0] * 255):02x}{int(rgb[1] * 255):02x}{int(rgb[2] * 255):02x}'
 
 def image_from_int( n ):
 	i = n % len(BADGE_KEYS)

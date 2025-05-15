@@ -64,7 +64,7 @@
 				<img src="{% static b.static_image %}">
 			</div>
 			<div class="text">
-				<img src="{% url 'draw_ring' %}?text={{ b.text | urlencode }}">
+				<img src="{% url 'draw_ring' %}?text={{ b.text | urlencode }}&bg={{ b.bg | urlencode }}">
 			</div>
 			{% if b.is_mine and not b.edit_badge %}
 			<a class="badge-selector" href="{% url 'show_wall' wall.id %}?editInscription={{ b.id }}"></a>

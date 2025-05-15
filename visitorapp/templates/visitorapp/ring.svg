@@ -24,13 +24,13 @@
 			/>
 	</defs>
 	<use href="#myBannerPath" id="banner-background"
-		fill="white"
+		fill="{{ bannerFill }}"
 		fill-opacity="0.85"
 		stroke="black"
 		stroke-width="0.001"
 		stroke-opacity="0.7"
 		/>
-	<text text-anchor="middle" textLength="2.1">
-		<textPath href="#myTextPath" font-family="Verdana" font-size="{{bannerFontSize}}" startOffset="50%">{{bannerContent}}</textPath>
+	<text textLength="2.1">
+		<textPath href="#myTextPath" font-family="Verdana" font-size="{{bannerFontSize}}">{{bannerContent}}</textPath>
 	</text>
 </svg>
