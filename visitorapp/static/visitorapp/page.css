@@ -2,6 +2,7 @@ body {
 	overflow: hidden ;
 	--bg-frame: #305;
 	--fg-frame: white;
+	font-size: 3vmin;
 }
 
 body > * {
