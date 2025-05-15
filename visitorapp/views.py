@@ -19,13 +19,14 @@ BADGE_IMAGES = {
 }
 
 def show_wall(request, wall_id ):
+	wall = get_object_or_404( Wall, pk=wall_id )
+	inscriptions = wall.inscription_set.order_by('-id');
 	visitor = current_visitor( request )
-	inscriptions = Inscription.objects.order_by('-id');
 	editInscription = int(request.GET['editInscription']) if 'editInscription' in request.GET else None
 	badgeList = [ make_badge(i,visitor, editInscription == i.id ) for i in inscriptions ]
 	editBadge = next( (b for b in badgeList if b['id'] == editInscription), None )
 	context = {
-		'wall': get_object_or_404( Wall, pk=wall_id ),
+		'wall': wall,
 		'edit_inscription': editInscription,
 		'badge_list': badgeList,
 		'edit_badge': editBadge,
