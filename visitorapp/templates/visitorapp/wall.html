@@ -8,6 +8,7 @@
 {% block links %}
 	{{ block.super }}
 	<link rel="stylesheet" href="{% static 'visitorapp/wall.css' %}">
+	<script type="text/javascript" src="{% static 'visitorapp/wall.js' %}"></script>
 {% endblock %}
 
 {% block header %}
@@ -77,8 +78,17 @@
 	{% if edit_badge %}
 	<form class="badge-editor {{ edit_badge.editor_location }}" method="POST" action="{% url 'update_inscription' wall.id edit_badge.id %}">
 		{% csrf_token %}
+		<div class="label">
+			Current Message:
+		</div>
+		<div class="text current">
+			"{{edit_badge.text}}"
+		</div>
+		<div class="label">
+			Replacement Message:
+		</div>
 		<div class="text">
-			<input name="text" type="text" value="{{edit_badge.text}}" autocomplete="off">
+			<input name="text" id="inscription_autofocus" onfocus="javascript:selectall(this)" type="text" value="{{edit_badge.text}}" autocomplete="off">
 		</div>
 		<div class="buttons">
 			<div class="button">

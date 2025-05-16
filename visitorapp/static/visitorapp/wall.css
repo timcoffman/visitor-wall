@@ -136,6 +136,18 @@
 	flex: 1 0 auto ;
 }
 
+.badge-editor .text.current {
+	font-size: 0.6em;
+}
+
+.badge-editor .label {
+	padding: 0.25em 0.25em 0 0.25em;
+	font-size: 0.6em;
+	color: rgba(0,0,0,0.7);
+	flex: 1 0 auto ;
+	font-weight: bold;
+}
+
 .badge-editor .button {
 	padding: 0.25em;
 	flex: 0 0 2em ;
@@ -284,18 +296,25 @@ position: relative;
 	bottom: 0;
 	border: solid red 1vmin;
 	border-radius: 50%;
-	animation: pulse-ring 2s ease-in-out infinite;
+	animation: pulse-ring 2s linear infinite;
 }
 
 @keyframes pulse-ring {
     0% {
         transform:scale(1.0);
+		opacity: 1.0;
     }
-    50% {
-        transform:scale(1.2);
+    60% {
+        transform:scale(2.0);
+		opacity: 0.0;
+    }
+    80% {
+        transform:scale(0.8);
+		opacity: 0.0;
     }
     100% {
-        transform:scale(1.0);
+		transform:scale(1.0);
+		opacity: 1.0;
     }
 }
 

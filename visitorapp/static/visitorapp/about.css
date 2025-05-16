@@ -3,6 +3,10 @@
 	text-align: center ;
 }
 
-#main img {
-	height: 80vmin;
+#main img.landscape-only {
+	width: 100%;
+}
+
+#main img.portrait-only {
+	height: 100%;
 }

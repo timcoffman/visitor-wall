@@ -1,3 +1,15 @@
+@media (orientation: landscape) {
+	.portrait-only {
+		display: none ;
+	}
+}
+
+@media (orientation: portrait) {
+	.landscape-only {
+		display: none ;
+	}
+}
+
 body {
 	overflow: hidden ;
 	--bg-frame: #305;

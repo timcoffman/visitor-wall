@@ -27,6 +27,8 @@ BADGE_IMAGES = {
 }
 
 def show_wall(request, wall_id ):
+	tutorialOverride = 'tutorial' in request.GET
+
 	wall = get_object_or_404( Wall, pk=wall_id )
 	visitor = current_visitor( request )
 	datetime_cutoff = datetime.now() - timedelta(hours=1, minutes=0)
@@ -46,7 +48,7 @@ def show_wall(request, wall_id ):
 	editBadge = next( (b for b in badgeList if b['id'] == editInscription), None )
 
 	myBadgeList = [ b for b in badgeList if b['is_mine'] ]
-	tutorial = len(myBadgeList) == 0
+	tutorial = tutorialOverride or len(myBadgeList) == 0
 
 	context = {
 		'wall': wall,
@@ -67,7 +69,7 @@ def make_badge( inscription, currentVisitor, isSelected ):
 	position = position_from_int( inscription.id )
 	bg = bg_from_int( inscription.id )
 	skew = skew_from_int( inscription.id )
-	editorLocation = 'upper' if position['y'] > 5 else 'lower'
+	editorLocation = 'upper' if position['y'] > 50 else 'lower'
 	staticImage = image_from_int( inscription.id )
 	badge = {
 		'id': inscription.id,
@@ -100,7 +102,6 @@ def bg_from_int( n ):
 	q = ( n * POS_M ) % (POS_D)
 	h = q / POS_D * 1.00
 	rgb = colorsys.hsv_to_rgb( h, 0.07, 1.0 )
-	print( f'h -> rgb = {0.77 + h} -> {rgb}')
 	return f'#{int(rgb[0] * 255):02x}{int(rgb[1] * 255):02x}{int(rgb[2] * 255):02x}'
 
 def image_from_int( n ):
