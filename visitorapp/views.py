@@ -33,8 +33,11 @@ def show_wall(request, wall_id ):
 	visitor = current_visitor( request )
 	datetime_cutoff = datetime.now() - timedelta(hours=1, minutes=0)
 	query = (
-		Q(visitor_id=visitor.id) | # show because this visitor wrote it
 		Q(moderation_status='ok') | # show because it's been reviewed and is ok
+		(
+			Q(visitor_id=visitor.id) & # show because this visitor wrote it ...
+			~Q(moderation_status='removed') # ... and it hasn't been removed
+		) |
 		(
 			Q(moderation_status='new') & # show because it hasn't been moderated ...
 			Q(created_date__gte=datetime_cutoff)  # ... but it was just created recently
