@@ -19,6 +19,12 @@ body > * {
 	height: 2em ;
 }
 
+#header img,
+#footer img {
+	height: 0.8em;
+	vertical-align: baseline;
+}
+
 #main {
 	top: 2em ;
 	bottom: 2em ;

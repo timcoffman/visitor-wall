@@ -1,0 +1,21 @@
+{% extends "./page.html" %}
+{% load static %}
+
+{% block title %}
+	About Visitor Wall
+{% endblock %}
+
+{% block links %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static 'visitorapp/about.css' %}">
+{% endblock %}
+
+{% block header %}
+	{{ block.super }} - About
+{% endblock %}
+
+{% block main %}
+
+<img src="{% static 'visitorapp/visitor-wall-about.svg' %}">
+
+{% endblock %}

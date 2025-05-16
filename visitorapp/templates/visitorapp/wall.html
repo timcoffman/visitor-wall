@@ -14,10 +14,6 @@
 	{{ block.super }} - {{ wall.name }}
 {% endblock %}
 
-{% block back %}
-	<a href="{% url 'index' %}">&larr; List of Walls</a>
-{% endblock %}
-
 {% block main %}
 
 {% if wall %}
@@ -44,12 +40,17 @@
 	</div>
 
 	{% if not edit_badge %}
-	<div class="controls wall-controls">
+	<div class="controls wall-controls {% if tutorial %}tutorial-mode{% endif %}">
 		<form method="POST" action="{% url 'add_inscription' wall.id %}">
 			{% csrf_token %}
 			<button type="submit">
 				<img src="{% static 'visitorapp/2730123_feather_harry_outline_potter_quill_icon.svg' %}">
 			</button>
+			{% if tutorial %}
+			<div class="decoration tutorial">
+				<div class="ring"></div>
+			</div>
+			{% endif %}
 		</form>
 	</div>
 	{% endif %}

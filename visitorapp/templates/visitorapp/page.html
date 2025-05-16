@@ -12,10 +12,15 @@
 
 <div id="header" class="frame">
 	<div>
-		{% block back %}{% endblock %}			
+		{% block back %}
+		<a href="{% url 'about' %}">
+			<img src="{% static 'visitorapp/326654_help_icon__light.svg' %}">
+			About <strong>Visitor Wall</strong>
+		</a>
+		{% endblock %}			
 	</div>
 	<div>
-		{% block header %}VisitorWall{% endblock %}		
+		{% block header %}VisitorWall{% endblock %}
 	</div>
 	<div>
 		v1.0

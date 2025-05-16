@@ -262,6 +262,43 @@
 	height: 10vmin;
 }
 
+.controls form {
+position: relative;
+}
+
+.tutorial-mode .decoration.tutorial {
+	pointer-events: none;
+	position: absolute ;
+	overflow: visible ;
+	left: -2vmin;
+	right: -2vmin;
+	top: -2vmin;
+	bottom: -2vmin;
+}
+
+.decoration .ring {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border: solid red 1vmin;
+	border-radius: 50%;
+	animation: pulse-ring 2s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform:scale(1.0);
+    }
+    50% {
+        transform:scale(1.2);
+    }
+    100% {
+        transform:scale(1.0);
+    }
+}
+
 .controls button {
 	cursor: pointer;
 	border-color: orange;
