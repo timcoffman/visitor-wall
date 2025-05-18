@@ -18,9 +18,11 @@ class Visitor(models.Model):
 class Inscription(models.Model):
 	wall = models.ForeignKey(Wall,on_delete=models.CASCADE)
 	visitor = models.ForeignKey(Visitor,on_delete=models.CASCADE)
-	text = models.CharField(max_length=2000)
+	text = models.CharField(max_length=100)
 	created_date = models.DateTimeField( "date created" )
-	moderation_status = models.CharField(max_length=36) 
+	moderation_status = models.CharField(max_length=36)
+	image_override = models.CharField(max_length=32)
+	signature = models.CharField(max_length=20)
 
 	def __str__(self):
 		return self.text
