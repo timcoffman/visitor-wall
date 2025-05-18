@@ -24,9 +24,9 @@ BADGE_IMAGES = {
 	'heart-001': 'visitorapp/9004758_heart_love_valentine_like_icon.svg',
 	'bicycle-001': 'visitorapp/3850763_activity_bicycle_cycling_riding_sport_icon.svg',
 	'cake-001': 'visitorapp/6334501_cake_dessert_love_party_sweet_icon.svg',
-	'tea-001' : 'tea-001',
-	'cherry-blossom-001' : 'cherry-blossom-001',
-	'cactus-001' : 'cactus-001',
+	'tea-001' : 'visitorapp/tea-001.svg',
+	'cherry-blossom-001' : 'visitorapp/cherry-blossom-001.svg',
+	'cactus-001' : 'visitorapp/cactus-001.svg',
 	
 }
 
@@ -57,8 +57,11 @@ def show_wall(request, wall_id ):
 	myBadgeList = [ b for b in badgeList if b['is_mine'] ]
 	tutorial = tutorialOverride or len(myBadgeList) == 0
 
+	badgeImages = [ { 'key': k, 'src': BADGE_IMAGES[k] } for k in BADGE_KEYS ]
+
 	context = {
 		'wall': wall,
+		'badge_images': badgeImages,
 		'edit_inscription': editInscription,
 		'badge_list': badgeList,
 		'edit_badge': editBadge,
@@ -77,10 +80,14 @@ def make_badge( inscription, currentVisitor, isSelected ):
 	bg = bg_from_int( inscription.id )
 	skew = skew_from_int( inscription.id )
 	editorLocation = 'upper' if position['y'] > 50 else 'lower'
-	staticImage = image_from_int( inscription.id )
+	imageKey = inscription.image_override
+	if imageKey is None or len(imageKey) == 0:
+		imageKey = image_key_from_int( inscription.id )
+	staticImage = BADGE_IMAGES[ imageKey ]
 	badge = {
 		'id': inscription.id,
 		'text': inscription.text,
+		'image_key': imageKey,
 		'static_image': staticImage,
 		'is_mine': currentVisitor.id == inscription.visitor_id,
 		'is_selected': isSelected,
@@ -111,10 +118,10 @@ def bg_from_int( n ):
 	rgb = colorsys.hsv_to_rgb( h, 0.07, 1.0 )
 	return f'#{int(rgb[0] * 255):02x}{int(rgb[1] * 255):02x}{int(rgb[2] * 255):02x}'
 
-def image_from_int( n ):
+def image_key_from_int( n ):
 	i = n % len(BADGE_KEYS)
 	k = BADGE_KEYS[ i ]
-	return BADGE_IMAGES[ k ]
+	return k
 
 INITIAL_TEXT = 'inscribe your message here'
 
@@ -139,8 +146,12 @@ def update_inscription(request, wall_id, inscription_id):
 	if ( visitor.id != inscription.visitor_id ):
 		return HttpResponse( f'not authorized to rewrite this inscription', status=401)
 	if 'destroy' in request.POST:
+		print( f'POST.destroy = {request.POST["destroy"]}' )
 		inscription.delete()
 	if 'commit' in request.POST:
+		print( f'POST.commit = {request.POST["commit"]}' )
 		inscription.text = request.POST['text']
+		if 'image-key' in request.POST:
+			inscription.image_override = request.POST['image-key'] 
 		inscription.save()
 	return redirect( reverse( 'show_wall', args=(wall.id,) ) )

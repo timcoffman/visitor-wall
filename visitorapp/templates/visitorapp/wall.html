@@ -84,15 +84,36 @@
 				(was "{{edit_badge.text}}")
 			</span>
 		</div>
-		<div class="text">
-			<input name="text"
-				type="text"
-				id="inscription_autofocus"
-				onfocus="javascript:selectall(this)"
-				oninput="javascript:toggleformervalue( this.value, '{{edit_badge.text}}', 'inscription_former_value')"
-				autocomplete="off"
-				value="{{edit_badge.text}}"
-				>
+		<div class="properties">
+			<div class="image">
+				<input type="hidden" id="editor-image-key" name="image-key" value="{{ edit_badge.image_key }}"> 
+				<div class="next-image">
+					<button type="button" onclick="incrementimagekey( 'editor-image-key', 'editor-image-preview' )">
+						<img id="badge_image_preview" src="{% static 'visitorapp/326575_chevron_left_icon.svg' %}">
+					</button>
+				</div>
+				<div class="preview-image" id="editor-image-preview">
+					{% for x in badge_images %}
+					<img class="badge-image-key-{{x.key}} {% if x.key == edit_badge.image_key %}active{% endif %}" src="{% static x.src %}">
+					{% endfor %}
+				</div>
+				<div class="prev-image">
+					<button type="button" onclick="decrementimagekey( 'editor-image-key', 'editor-image-preview' )">
+						<img id="badge-image-preview" src="{% static 'visitorapp/326578_chevron_right_icon.svg' %}">
+					</button>
+				</div>
+				<div class="next-image"></div>
+			</div>
+			<div class="text">
+				<input name="text"
+					type="text"
+					id="inscription_autofocus"
+					onfocus="javascript:selectall(this)"
+					oninput="javascript:toggleformervalue( this.value, '{{edit_badge.text}}', 'inscription_former_value')"
+					autocomplete="off"
+					value="{{edit_badge.text}}"
+					>
+			</div>
 		</div>
 		<div class="buttons">
 			<div class="button">
@@ -111,7 +132,7 @@
 		<div class="horizontal-divider"></div>
 		<div class="buttons">
 			<div class="button">
-				<button type="submit" name="destroy" onsubmit="return confirm('Delete this inscription?')">
+				<button type="submit" name="destroy" onsubmit="return confirminscriptionremove()">
 					<img src="{% static 'visitorapp/326606_delete_icon.svg' %}">
 					Remove
 				</button>
