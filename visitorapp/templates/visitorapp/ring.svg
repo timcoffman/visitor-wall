@@ -29,6 +29,6 @@
 		stroke="none"
 		/>
 	<text textLength="2.1">
-		<textPath href="#myTextPath" font-family="Verdana" font-size="{{bannerFontSize}}">{{bannerContent}}</textPath>
+		<textPath textLength="2.1" href="#myTextPath" font-family="Verdana" font-size="{{bannerFontSize}}">{{bannerContent}}</textPath>
 	</text>
 </svg>
