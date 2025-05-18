@@ -5,6 +5,7 @@
 
 #main img.landscape-only {
 	width: 100%;
+	max-width: 140vh;
 }
 
 #main img.portrait-only {

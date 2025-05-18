@@ -134,11 +134,13 @@ def add_inscription(request, wall_id):
 
 def update_inscription(request, wall_id, inscription_id):
 	wall = get_object_or_404( Wall, pk=wall_id )
+	visitor = current_visitor( request )
+	inscription = get_object_or_404( Inscription, pk=inscription_id )
+	if ( visitor.id != inscription.visitor_id ):
+		return HttpResponse( f'not authorized to rewrite this inscription', status=401)
+	if 'destroy' in request.POST:
+		inscription.delete()
 	if 'commit' in request.POST:
-		visitor = current_visitor( request )
-		inscription = get_object_or_404( Inscription, pk=inscription_id )
-		if ( visitor.id != inscription.visitor_id ):
-			return HttpResponse( f'not authorized to rewrite this inscription', status=401)
 		inscription.text = request.POST['text']
 		inscription.save()
 	return redirect( reverse( 'show_wall', args=(wall.id,) ) )

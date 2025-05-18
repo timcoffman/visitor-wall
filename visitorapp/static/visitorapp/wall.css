@@ -148,9 +148,13 @@
 	font-weight: bold;
 }
 
+.badge-editor .label .former-value {
+	font-size: 0.8em;
+	color: rgba(0,0,0,0.7);
+}
+
 .badge-editor .button {
 	padding: 0.25em;
-	flex: 0 0 2em ;
 	font-size: 1rem;
 }
 
@@ -162,19 +166,24 @@
 }
 
 .badge-editor input {
-	background: rgba(255,255,255,0.4);
+	background: rgba(255,255,255,0.7);
 	border: none;
 	font-size: 1em;
+}
+
+.badge-editor .horizontal-divider {
+	border-bottom: solid 1px black;
+	text-align: center; 
 }
 
 .badge-editor .buttons {
 	display: flex ;
 	flex-flow: row nowrap;
-	justify-content: end;
+	justify-content: center;
 }
 
 .badge-editor .buttons > * {
-	flex: 1 1 auto;
+	flex: 0 1 20em;
 }
 
 .badge-editor a {
@@ -191,6 +200,7 @@
 .badge-editor button {
 	background: none;
 	border-color: orange;
+	background: rgba(255,255,255,0.5);
 	border-radius: 1em;
 	padding: 0.25em 1em;
 	display: flex ;
@@ -201,6 +211,7 @@
 
 .badge-editor .button img {
 	margin: 0.1em 0.25em;
+	vertical-align: text-bottom;
 }
 
 .badge-editor .button:hover button {

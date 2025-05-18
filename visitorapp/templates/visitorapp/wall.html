@@ -79,16 +79,20 @@
 	<form class="badge-editor {{ edit_badge.editor_location }}" method="POST" action="{% url 'update_inscription' wall.id edit_badge.id %}">
 		{% csrf_token %}
 		<div class="label">
-			Current Message:
-		</div>
-		<div class="text current">
-			"{{edit_badge.text}}"
-		</div>
-		<div class="label">
 			Replacement Message:
+			<span style="display: none;" class="former-value" id="inscription_former_value">
+				(was "{{edit_badge.text}}")
+			</span>
 		</div>
 		<div class="text">
-			<input name="text" id="inscription_autofocus" onfocus="javascript:selectall(this)" type="text" value="{{edit_badge.text}}" autocomplete="off">
+			<input name="text"
+				type="text"
+				id="inscription_autofocus"
+				onfocus="javascript:selectall(this)"
+				oninput="javascript:toggleformervalue( this.value, '{{edit_badge.text}}', 'inscription_former_value')"
+				autocomplete="off"
+				value="{{edit_badge.text}}"
+				>
 		</div>
 		<div class="buttons">
 			<div class="button">
@@ -101,6 +105,15 @@
 				<button type="submit" name="commit">
 					<img src="{% static 'visitorapp/326568_check_circle_icon.svg' %}">
 					Save Inscription
+				</button>
+			</div>
+		</div>
+		<div class="horizontal-divider"></div>
+		<div class="buttons">
+			<div class="button">
+				<button type="submit" name="destroy" onsubmit="return confirm('Delete this inscription?')">
+					<img src="{% static 'visitorapp/326606_delete_icon.svg' %}">
+					Remove
 				</button>
 			</div>
 		</div>

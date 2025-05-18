@@ -3,6 +3,14 @@ function add_inscription() {
 	console.log( `called add_inscription()` );
 }
 
+function toggleformervalue( value, formerValue, targetElementId ) {
+	const targetElement = document.getElementById( targetElementId );
+	if ( targetElement ) {
+		const shouldShow = value != formerValue ;
+		targetElement.style['display'] = shouldShow ? '' : 'none' ;
+	}
+}
+
 function selectall( element ) {
 	try {
 		element.select()
