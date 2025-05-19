@@ -146,10 +146,10 @@ def update_inscription(request, wall_id, inscription_id):
 	visitor = current_visitor( request )
 	inscription = get_object_or_404( Inscription, pk=inscription_id )
 	if ( visitor.id != inscription.visitor_id ):
-		return HttpResponse( f'not authorized to rewrite this inscription', status=401)
+		return HttpResponse( f'not authorized to change this inscription', status=401)
 	if 'destroy' in request.POST:
 		print( f'POST.destroy = {request.POST["destroy"]}' )
-		inscription.delete()
+		inscription.moderation_status = 'removed'
 	if 'commit' in request.POST:
 		print( f'POST.commit = {request.POST["commit"]}' )
 		inscription.text = request.POST['text']
@@ -157,5 +157,5 @@ def update_inscription(request, wall_id, inscription_id):
 			imageKey = request.POST['image-key']
 			if imageKey in BADGE_KEYS:
 				inscription.image_override = imageKey 
-		inscription.save()
+	inscription.save()
 	return redirect( reverse( 'show_wall', args=(wall.id,) ) )

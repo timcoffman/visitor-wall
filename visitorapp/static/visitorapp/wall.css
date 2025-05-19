@@ -229,7 +229,7 @@
 
 .badge-editor .properties .image .preview-image img {
 	display: none;
-	height: 100%;
+	width: 1.25em;
 }
 
 .badge-editor .properties .image .preview-image img.active {
