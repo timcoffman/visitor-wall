@@ -3,7 +3,7 @@ from django.db import models
 class Wall(models.Model):
 	name = models.CharField(max_length=200)
 	banner = models.CharField(max_length=200)
-	description_html = models.CharField(max_length=2000)
+	description_html = models.CharField(max_length=2000, blank=True)
 	created_date = models.DateTimeField( "date created" )
 
 	def __str__(self):
@@ -21,8 +21,8 @@ class Inscription(models.Model):
 	text = models.CharField(max_length=100)
 	created_date = models.DateTimeField( "date created" )
 	moderation_status = models.CharField(max_length=36)
-	image_override = models.CharField(max_length=32)
-	signature = models.CharField(max_length=20)
+	image_override = models.CharField(max_length=32, blank=True)
+	signature = models.CharField(max_length=20, blank=True)
 
 	def __str__(self):
 		return self.text

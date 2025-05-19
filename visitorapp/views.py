@@ -82,7 +82,9 @@ def make_badge( inscription, currentVisitor, isSelected ):
 	editorLocation = 'upper' if position['y'] > 50 else 'lower'
 	imageKey = inscription.image_override
 	if imageKey is None or len(imageKey) == 0:
-		imageKey = image_key_from_int( inscription.id )
+		checkImageKey = image_key_from_int( inscription.id )
+		if checkImageKey in BADGE_KEYS:
+			imageKey = checkImageKey
 	staticImage = BADGE_IMAGES[ imageKey ]
 	badge = {
 		'id': inscription.id,
@@ -152,6 +154,8 @@ def update_inscription(request, wall_id, inscription_id):
 		print( f'POST.commit = {request.POST["commit"]}' )
 		inscription.text = request.POST['text']
 		if 'image-key' in request.POST:
-			inscription.image_override = request.POST['image-key'] 
+			imageKey = request.POST['image-key']
+			if imageKey in BADGE_KEYS:
+				inscription.image_override = imageKey 
 		inscription.save()
 	return redirect( reverse( 'show_wall', args=(wall.id,) ) )
