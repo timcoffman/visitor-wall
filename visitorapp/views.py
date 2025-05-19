@@ -74,10 +74,17 @@ def current_visitor( request ):
 	return visitor
 
 def make_badge( inscription, currentVisitor, isSelected ):
+	signature = inscription.signature
+	if signature is None or len(signature) == 0:
+		textWithSignature = inscription.text
+	else:
+		textWithSignature = inscription.text + ' -' + signature
+
 	position = position_from_int( inscription.id )
 	bg = bg_from_int( inscription.id )
 	skew = skew_from_int( inscription.id )
 	editorLocation = 'upper' if position['y'] > 50 else 'lower'
+
 	imageKey = inscription.image_override
 	if imageKey is None or len(imageKey) == 0:
 		checkImageKey = image_key_from_int( inscription.id )
@@ -94,6 +101,8 @@ def make_badge( inscription, currentVisitor, isSelected ):
 	badge = {
 		'id': inscription.id,
 		'text': inscription.text,
+		'signature': inscription.signature,
+		'text_with_signature': textWithSignature,
 		'image_key': imageKey,
 		'badge_images': badgeImages,
 		'static_image': staticImage,
@@ -162,6 +171,8 @@ def update_inscription(request, wall_id, inscription_id):
 	if 'commit' in request.POST:
 		print( f'POST.commit = {request.POST["commit"]}' )
 		inscription.text = request.POST['text']
+		if 'signature' in request.POST:
+			inscription.signature = request.POST['signature']
 		if 'image-key' in request.POST:
 			imageKey = request.POST['image-key']
 			if imageKey in BADGE_KEYS:

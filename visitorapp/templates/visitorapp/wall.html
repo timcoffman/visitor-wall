@@ -2,148 +2,152 @@
 {% load static %}
 
 {% block title %}
-	Wall - {{ wall.name }}
+Wall - {{ wall.name }}
 {% endblock %}
 
 {% block links %}
-	{{ block.super }}
-	<link rel="stylesheet" href="{% static 'visitorapp/wall.css' %}">
-	<script type="text/javascript" src="{% static 'visitorapp/wall.js' %}"></script>
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'visitorapp/wall.css' %}">
+<script type="text/javascript" src="{% static 'visitorapp/wall.js' %}"></script>
 {% endblock %}
 
 {% block header %}
-	<span class="wide-only">{{ block.super }} -</span> {{ wall.name }}
+<span class="wide-only">{{ block.super }} -</span> {{ wall.name }}
 {% endblock %}
 
 {% block main %}
 
 {% if wall %}
 
-	<div class="backdrop">
-		<div></div>
-		<div><img src="{% static 'visitorapp/TernNBDP8iBlue_1800x.png' %}"></div>
-		<div></div>
-	</div>
+<div class="backdrop">
+	<div></div>
+	<div><img src="{% static 'visitorapp/TernNBDP8iBlue_1800x.png' %}"></div>
+	<div></div>
+</div>
 
-	<div class="banner">
-		<div><img height="100%" src="{% url 'draw_banner' %}?text={{ wall.banner | urlencode }}"></div>
-	</div>
+<div class="banner">
+	<div><img height="100%" src="{% url 'draw_banner' %}?text={{ wall.banner | urlencode }}"></div>
+</div>
 
-	<div class="info">
-		<p>id: {{ wall.id }}</p>
-		<p>name: {{ wall.name }}</p>
-		<p>banner: {{ wall.banner }}</p>
-		<p>banner:</p>
-		<p>{{ wall.description_html | safe }}</p>
-		{% for i in inscriptions %}
-		<p> inscription: {{i}} <p>
+<div class="info">
+	<p>id: {{ wall.id }}</p>
+	<p>name: {{ wall.name }}</p>
+	<p>banner: {{ wall.banner }}</p>
+	<p>banner:</p>
+	<p>{{ wall.description_html | safe }}</p>
+	{% for i in inscriptions %}
+	<p> inscription: {{i}}
+	<p>
 		{% endfor %}
-	</div>
+</div>
 
-	{% if not edit_badge %}
-	<div class="controls wall-controls {% if tutorial %}tutorial-mode{% endif %}">
-		<form method="POST" action="{% url 'add_inscription' wall.id %}">
-			{% csrf_token %}
-			<button type="submit">
-				<img src="{% static 'visitorapp/2730123_feather_harry_outline_potter_quill_icon.svg' %}">
-			</button>
-			{% if tutorial %}
-			<div class="decoration tutorial">
-				<div class="ring"></div>
-			</div>
-			{% endif %}
-		</form>
-	</div>
-	{% endif %}
-
-	<div class="badges {% if edit_badge %}edit-mode{% endif %}">
-		{% for b in badge_list %}
-		<div id="badge-{{b.id}}"
-		    style="left: {{b.position.x}}%; top: {{b.position.y}}%;"
-			class="badge {% if b.is_selected %}selected{% endif %} {% if b.is_mine %}permitted-to-edit{% endif %}"
-			>
-			<div class="image" style="transform: rotate( {{ b.skew }}deg )">
-				<img src="{% static b.static_image %}">
-			</div>
-			<div class="text">
-				<img src="{% url 'draw_ring' %}?text={{ b.text | urlencode }}&bg={{ b.bg | urlencode }}">
-			</div>
-			{% if b.is_mine and not b.edit_badge %}
-			<a class="badge-selector" href="{% url 'show_wall' wall.id %}?editInscription={{ b.id }}"></a>
-			{% endif %}
-		</div>
-		{% endfor %}
-	</div>
-
-	{% if edit_badge %}
-	<form class="badge-editor {{ edit_badge.editor_location }}" method="POST" action="{% url 'update_inscription' wall.id edit_badge.id %}">
+{% if not edit_badge %}
+<div class="controls wall-controls {% if tutorial %}tutorial-mode{% endif %}">
+	<form method="POST" action="{% url 'add_inscription' wall.id %}">
 		{% csrf_token %}
-		<div class="label">
-			Replacement Message:
-			<span class="former-value" id="inscription_former_value">
-				(was "{{edit_badge.text}}")
-			</span>
+		<button type="submit">
+			<img src="{% static 'visitorapp/2730123_feather_harry_outline_potter_quill_icon.svg' %}">
+		</button>
+		{% if tutorial %}
+		<div class="decoration tutorial">
+			<div class="ring"></div>
 		</div>
-		<div class="properties">
-			<div class="image">
-				<input type="hidden" id="editor-image-key" name="image-key" value="{{ edit_badge.image_key }}"> 
-				<div class="next-image">
-					<button type="button" onclick="incrementimagekey( 'editor-image-key', 'editor-image-preview' )">
-						<img id="badge_image_preview" src="{% static 'visitorapp/326575_chevron_left_icon.svg' %}">
-					</button>
-				</div>
-				<div class="preview-image" id="editor-image-preview">
-					{% for x in edit_badge.badge_images %}
-					<img class="badge-image-key-{{x.key}} {% if x.key == edit_badge.image_key %}active{% endif %}" src="{% static x.src %}">
-					{% endfor %}
-				</div>
-				<div class="prev-image">
-					<button type="button" onclick="decrementimagekey( 'editor-image-key', 'editor-image-preview' )">
-						<img id="badge-image-preview" src="{% static 'visitorapp/326578_chevron_right_icon.svg' %}">
-					</button>
-				</div>
-				<div class="next-image"></div>
-			</div>
-			<div class="text">
-				<input name="text"
-					type="text"
-					id="inscription_autofocus"
-					onfocus="javascript:selectall(this)"
-					oninput="javascript:toggleformervalue( this.value, '{{edit_badge.text}}', 'inscription_former_value')"
-					autocomplete="off"
-					value="{{edit_badge.text}}"
-					>
-			</div>
-		</div>
-		<div class="buttons">
-			<div class="button">
-				<a href="{% url 'show_wall' wall.id %}">
-					<img src="{% static 'visitorapp/326541_block_icon.svg' %}">
-					Nevermind
-				</a>
-			</div>
-			<div class="button">
-				<button type="submit" name="commit">
-					<img src="{% static 'visitorapp/326568_check_circle_icon.svg' %}">
-					Save Inscription
-				</button>
-			</div>
-		</div>
-		<div class="horizontal-divider"></div>
-		<div class="buttons">
-			<div class="button">
-				<button type="submit" name="destroy" onsubmit="return confirminscriptionremove()">
-					<img src="{% static 'visitorapp/326606_delete_icon.svg' %}">
-					Remove
-				</button>
-			</div>
-		</div>
+		{% endif %}
 	</form>
-	{% endif %}
+</div>
+{% endif %}
+
+<div class="badges {% if edit_badge %}edit-mode{% endif %}">
+	{% for b in badge_list %}
+	<div id="badge-{{b.id}}" style="left: {{b.position.x}}%; top: {{b.position.y}}%;"
+		class="badge {% if b.is_selected %}selected{% endif %} {% if b.is_mine %}permitted-to-edit{% endif %}">
+		<div class="image" style="transform: rotate( {{ b.skew }}deg )">
+			<img src="{% static b.static_image %}">
+		</div>
+		<div class="text">
+			<img src="{% url 'draw_ring' %}?text={{ b.text_with_signature | urlencode }}&bg={{ b.bg | urlencode }}">
+		</div>
+		{% if b.is_mine and not b.edit_badge %}
+		<a class="badge-selector" href="{% url 'show_wall' wall.id %}?editInscription={{ b.id }}"></a>
+		{% endif %}
+	</div>
+	{% endfor %}
+</div>
+
+{% if edit_badge %}
+<form class="badge-editor {{ edit_badge.editor_location }}" method="POST"
+	action="{% url 'update_inscription' wall.id edit_badge.id %}">
+	{% csrf_token %}
+	<div class="label">
+		Message:
+		<span class="former-value" id="inscription_former_value">
+			(was "{{edit_badge.text}}")
+		</span>
+	</div>
+	<div class="properties">
+		<div class="image">
+			<input type="hidden" id="editor-image-key" name="image-key" value="{{ edit_badge.image_key }}">
+			<div class="next-image">
+				<button type="button" onclick="incrementimagekey( 'editor-image-key', 'editor-image-preview' )">
+					<img id="badge_image_preview" src="{% static 'visitorapp/326575_chevron_left_icon.svg' %}">
+				</button>
+			</div>
+			<div class="preview-image" id="editor-image-preview">
+				{% for x in edit_badge.badge_images %}
+				<img class="badge-image-key-{{x.key}} {% if x.key == edit_badge.image_key %}active{% endif %}"
+					src="{% static x.src %}">
+				{% endfor %}
+			</div>
+			<div class="prev-image">
+				<button type="button" onclick="decrementimagekey( 'editor-image-key', 'editor-image-preview' )">
+					<img id="badge-image-preview" src="{% static 'visitorapp/326578_chevron_right_icon.svg' %}">
+				</button>
+			</div>
+			<div class="next-image"></div>
+		</div>
+		<div class="text">
+			<input name="text" type="text" id="inscription_autofocus" onfocus="javascript:selectall(this)"
+				oninput="javascript:toggleformervalue( this.value, '{{edit_badge.text}}', 'inscription_former_value')"
+				autocomplete="off" value="{{edit_badge.text}}">
+		</div>
+	</div>
+	<div class="properties secondary">
+		<div class="label">
+			Signed
+		</div>
+		<div class="signature">
+			<input name="signature" type="text" value="{{edit_badge.signature}}" placeholder="your name here">
+		</div>
+	</div>
+	<div class="buttons">
+		<div class="button">
+			<a href="{% url 'show_wall' wall.id %}">
+				<img src="{% static 'visitorapp/326541_block_icon.svg' %}">
+				Nevermind
+			</a>
+		</div>
+		<div class="button">
+			<button type="submit" name="commit">
+				<img src="{% static 'visitorapp/326568_check_circle_icon.svg' %}">
+				Save Inscription
+			</button>
+		</div>
+	</div>
+	<div class="horizontal-divider"></div>
+	<div class="buttons">
+		<div class="button">
+			<button type="submit" name="destroy" onsubmit="return confirminscriptionremove()">
+				<img src="{% static 'visitorapp/326606_delete_icon.svg' %}">
+				Remove
+			</button>
+		</div>
+	</div>
+</form>
+{% endif %}
 
 {% else %}
 
-	<p>no such wall</p>
+<p>no such wall</p>
 
 {% endif %}
 
