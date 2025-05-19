@@ -10,8 +10,11 @@
 	<link rel="stylesheet" href="{% static 'visitorapp/about.css' %}">
 {% endblock %}
 
+{% block back %}
+{% endblock %}
+
 {% block header %}
-	{{ block.super }} - About
+	<span class="wide-only">{{ block.super }} -</span> About
 {% endblock %}
 
 {% block main %}

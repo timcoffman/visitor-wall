@@ -4,6 +4,7 @@
 <head>
 	<title>{% block title %}Visitor Wall{% endblock %}</title>
 	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	{% block links %}
 	<link rel="stylesheet" href="{% static 'visitorapp/page.css' %}">
 	{% endblock %}
@@ -15,7 +16,7 @@
 		{% block back %}
 		<a href="{% url 'about' %}">
 			<img src="{% static 'visitorapp/326654_help_icon__light.svg' %}">
-			About <strong>Visitor Wall</strong>
+			About <strong class="wide-only">Visitor Wall</strong>
 		</a>
 		{% endblock %}			
 	</div>

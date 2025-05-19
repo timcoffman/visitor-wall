@@ -10,11 +10,20 @@
 	}
 }
 
-body {
-	overflow: hidden ;
+@media (max-width: 600px) {
+	.wide-only {
+		display: none;
+	}
+}
+
+html {
 	--bg-frame: #305;
 	--fg-frame: white;
-	font-size: 3vmin;
+	font-size: 18pt;
+}
+
+body {
+	overflow: hidden ;
 }
 
 body > * {
