@@ -5,6 +5,7 @@ from django.db.models import Q
 
 from datetime import datetime, timedelta
 import colorsys
+import random
 
 from .models import Wall, Visitor, Inscription
 
@@ -57,11 +58,8 @@ def show_wall(request, wall_id ):
 	myBadgeList = [ b for b in badgeList if b['is_mine'] ]
 	tutorial = tutorialOverride or len(myBadgeList) == 0
 
-	badgeImages = [ { 'key': k, 'src': BADGE_IMAGES[k] } for k in BADGE_KEYS ]
-
 	context = {
 		'wall': wall,
-		'badge_images': badgeImages,
 		'edit_inscription': editInscription,
 		'badge_list': badgeList,
 		'edit_badge': editBadge,
@@ -86,10 +84,18 @@ def make_badge( inscription, currentVisitor, isSelected ):
 		if checkImageKey in BADGE_KEYS:
 			imageKey = checkImageKey
 	staticImage = BADGE_IMAGES[ imageKey ]
+
+	if isSelected:
+		badgeImages = [ { 'key': k, 'src': BADGE_IMAGES[k] } for k in BADGE_KEYS ]
+		random_from_int( inscription.id ).shuffle( badgeImages )
+	else:
+		badgeImages = None
+
 	badge = {
 		'id': inscription.id,
 		'text': inscription.text,
 		'image_key': imageKey,
+		'badge_images': badgeImages,
 		'static_image': staticImage,
 		'is_mine': currentVisitor.id == inscription.visitor_id,
 		'is_selected': isSelected,
@@ -99,6 +105,9 @@ def make_badge( inscription, currentVisitor, isSelected ):
 		'editor_location': editorLocation,
 		}
 	return badge
+
+def random_from_int( n ):
+	return random.Random(n)
 
 POS_M = 27644437
 POS_D = 1932.0

@@ -93,7 +93,7 @@
 					</button>
 				</div>
 				<div class="preview-image" id="editor-image-preview">
-					{% for x in badge_images %}
+					{% for x in edit_badge.badge_images %}
 					<img class="badge-image-key-{{x.key}} {% if x.key == edit_badge.image_key %}active{% endif %}" src="{% static x.src %}">
 					{% endfor %}
 				</div>
