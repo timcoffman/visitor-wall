@@ -9,7 +9,7 @@ import random
 
 from .models import Wall, Visitor, Inscription
 from .layouts import HEXAGONAL_LAYOUTS
-from generate_layout import normalized_layout
+from .badge_images import BADGE_KEYS, BADGE_IMAGES 
 
 def about(request):
 	context = {	}
@@ -21,17 +21,6 @@ def index(request):
 	}
 	return render( request, "visitorapp/index.html", context )
 
-BADGE_KEYS = [ 'flower-001', 'bicycle-001', 'heart-001', 'cake-001' ,'tea-001','cactus-001','cherry-blossom-001']
-BADGE_IMAGES = {
-	'flower-001': 'visitorapp/2693808_abstract ecology_abstraction_environmental_flower_leaves_icon.svg',
-	'heart-001': 'visitorapp/9004758_heart_love_valentine_like_icon.svg',
-	'bicycle-001': 'visitorapp/3850763_activity_bicycle_cycling_riding_sport_icon.svg',
-	'cake-001': 'visitorapp/6334501_cake_dessert_love_party_sweet_icon.svg',
-	'tea-001' : 'visitorapp/tea-001.svg',
-	'cherry-blossom-001' : 'visitorapp/cherry-blossom-001.svg',
-	'cactus-001' : 'visitorapp/cactus-001.svg',
-	
-}
 
 def show_wall(request, wall_id ):
 	tutorialOverride = 'tutorial' in request.GET
