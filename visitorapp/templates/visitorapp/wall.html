@@ -57,7 +57,7 @@ Wall - {{ wall.name }}
 </div>
 {% endif %}
 
-<div class="badges {% if edit_badge %}edit-mode{% endif %}">
+<div class="badges layout-{{ badge_layout_size }} {% if edit_badge %}edit-mode{% endif %}">
 	{% for b in badge_list %}
 	<div id="badge-{{b.id}}" style="left: {{b.position.x}}%; top: {{b.position.y}}%;"
 		class="badge {% if b.is_selected %}selected{% endif %} {% if b.is_mine %}permitted-to-edit{% endif %}">

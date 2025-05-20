@@ -40,7 +40,7 @@ DEBUG = True
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = [ '.herokuapp.com' ]
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = [ '127.0.0.1', 'localhost', '.local' ]
 
 
 # Application definition

@@ -23,6 +23,7 @@
 }
 
 .badges {
+	pointer-events: none;
 	top: 16vmin;
 	left: 16vmin;
 	bottom: 16vmin;
@@ -30,12 +31,71 @@
 }
 
 .badge {
+	pointer-events: auto;
 	animation: scale-in 0.5s ease-in;
 	position: absolute;
 	width: 30vmin;
 	height: 30vmin;
 	margin-left: -15vmin;
 	margin-top: -15vmin;
+}
+
+.badges.layout-6,
+.badges.layout-5 {
+	top: 5vmin;
+	left: 5vmin;
+	bottom: 5vmin;
+	right: 5vmin;
+}
+
+.badges.layout-6 .badge,
+.badges.layout-5 .badge {
+	width: 8vmin;
+	height: 8vmin;
+	margin-left: -4vmin;
+	margin-top: -4vmin;
+}
+
+.badges.layout-4 {
+	top: 7vmin;
+	left: 7vmin;
+	bottom: 7vmin;
+	right: 7vmin;
+}
+
+.badges.layout-4 .badge {
+	width: 12vmin;
+	height: 12vmin;
+	margin-left: -6vmin;
+	margin-top: -6vmin;
+}
+
+.badges.layout-3 {
+	top: 9vmin;
+	left: 9vmin;
+	bottom: 9vmin;
+	right: 9vmin;
+}
+
+.badges.layout-3 .badge {
+	width: 16vmin;
+	height: 16vmin;
+	margin-left: -8vmin;
+	margin-top: -8vmin;
+}
+
+.badges.layout-2 {
+	top: 12vmin;
+	left: 12vmin;
+	bottom: 12vmin;
+	right: 12vmin;
+}
+
+.badges.layout-2 .badge {
+	width: 22vmin;
+	height: 22vmin;
+	margin-left: -11vmin;
+	margin-top: -11vmin;
 }
 
 @keyframes scale-in {

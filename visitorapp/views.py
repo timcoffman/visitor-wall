@@ -8,6 +8,8 @@ import colorsys
 import random
 
 from .models import Wall, Visitor, Inscription
+from .layouts import HEXAGONAL_LAYOUTS
+from generate_layout import normalized_layout
 
 def about(request):
 	context = {	}
@@ -52,7 +54,10 @@ def show_wall(request, wall_id ):
 
 	editInscription = int(request.GET['editInscription']) if 'editInscription' in request.GET else None
 
-	badgeList = [ make_badge(i,visitor, editInscription == i.id ) for i in inscriptions ]
+	layout_size, layout = next( ( (n,hl) for (n,hl) in enumerate(HEXAGONAL_LAYOUTS) if len(hl) > len(inscriptions) ), None )
+	normalized_layout = [ { 'x': int(xy['x'] * 100 + 50), 'y': int(xy['y'] * 100 + 50) } for xy in layout ]
+
+	badgeList = [ make_badge( i, visitor, normalized_layout[n], editInscription == i.id ) for n, i in enumerate(inscriptions) ]
 	editBadge = next( (b for b in badgeList if b['id'] == editInscription), None )
 
 	myBadgeList = [ b for b in badgeList if b['is_mine'] ]
@@ -62,6 +67,7 @@ def show_wall(request, wall_id ):
 		'wall': wall,
 		'edit_inscription': editInscription,
 		'badge_list': badgeList,
+		'badge_layout_size': layout_size,
 		'edit_badge': editBadge,
 		'tutorial': tutorial,
 	}
@@ -73,14 +79,13 @@ def current_visitor( request ):
 	visitor, visitor_created = Visitor.objects.get_or_create( cookie=request.session.session_key, defaults={} )
 	return visitor
 
-def make_badge( inscription, currentVisitor, isSelected ):
+def make_badge( inscription, currentVisitor, position, isSelected ):
 	signature = inscription.signature
 	if signature is None or len(signature) == 0:
 		textWithSignature = inscription.text
 	else:
 		textWithSignature = inscription.text + ' -' + signature
 
-	position = position_from_int( inscription.id )
 	bg = bg_from_int( inscription.id )
 	skew = skew_from_int( inscription.id )
 	editorLocation = 'upper' if position['y'] > 50 else 'lower'
