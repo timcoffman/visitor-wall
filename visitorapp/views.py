@@ -57,7 +57,17 @@ def show_wall(request, wall_id ):
 	layout_size, layout = next( ( (n,hl) for (n,hl) in enumerate(HEXAGONAL_LAYOUTS) if len(hl) > len(inscriptions) ), None )
 	normalized_layout = [ { 'x': int(xy['x'] * 100 + 50), 'y': int(xy['y'] * 100 + 50) } for xy in layout ]
 
-	badgeList = [ make_badge( i, visitor, normalized_layout[n], editInscription == i.id ) for n, i in enumerate(inscriptions) ]
+	badgeList = [
+		make_badge(
+			i,
+			visitor,
+			normalized_layout[n],
+			0.5 * n / len(inscriptions),
+			editInscription == i.id
+			)
+		for n, i
+		in enumerate(inscriptions)
+		]
 	editBadge = next( (b for b in badgeList if b['id'] == editInscription), None )
 
 	myBadgeList = [ b for b in badgeList if b['is_mine'] ]
@@ -79,7 +89,7 @@ def current_visitor( request ):
 	visitor, visitor_created = Visitor.objects.get_or_create( cookie=request.session.session_key, defaults={} )
 	return visitor
 
-def make_badge( inscription, currentVisitor, position, isSelected ):
+def make_badge( inscription, currentVisitor, position, animationDelaySeconds, isSelected ):
 	signature = inscription.signature
 	if signature is None or len(signature) == 0:
 		textWithSignature = inscription.text
@@ -115,6 +125,7 @@ def make_badge( inscription, currentVisitor, position, isSelected ):
 		'is_selected': isSelected,
 		'position': position,
 		'skew': skew,
+		'anim_delay': f'{animationDelaySeconds:0.2f}s',
 		'bg': bg,
 		'editor_location': editorLocation,
 		}

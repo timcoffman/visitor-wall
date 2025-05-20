@@ -31,8 +31,9 @@
 }
 
 .badge {
+	--anim-delay: 0s;
 	pointer-events: auto;
-	animation: scale-in 0.5s ease-in;
+	animation: pre-scale-in var(--anim-delay), scale-in 0.5s ease-in var(--anim-delay);
 	position: absolute;
 	width: 30vmin;
 	height: 30vmin;
@@ -96,6 +97,15 @@
 	height: 22vmin;
 	margin-left: -11vmin;
 	margin-top: -11vmin;
+}
+
+@keyframes pre-scale-in {
+    0% {
+        transform:scale(0.0);
+    }
+	100% {
+        transform:scale(0.0);
+    }
 }
 
 @keyframes scale-in {

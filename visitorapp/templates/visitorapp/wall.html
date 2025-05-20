@@ -59,7 +59,7 @@ Wall - {{ wall.name }}
 
 <div class="badges layout-{{ badge_layout_size }} {% if edit_badge %}edit-mode{% endif %}">
 	{% for b in badge_list %}
-	<div id="badge-{{b.id}}" style="left: {{b.position.x}}%; top: {{b.position.y}}%;"
+	<div id="badge-{{b.id}}" style="left: {{b.position.x}}%; top: {{b.position.y}}%; --anim-delay: {{b.anim_delay}};"
 		class="badge {% if b.is_selected %}selected{% endif %} {% if b.is_mine %}permitted-to-edit{% endif %}">
 		<div class="image" style="transform: rotate( {{ b.skew }}deg )">
 			<img src="{% static b.static_image %}">
